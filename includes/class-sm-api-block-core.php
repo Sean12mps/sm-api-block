@@ -91,6 +91,9 @@ class Sm_Api_Block_Core {
 
 		// Endpoints.
 		require_once SM_API_BLOCK_PATH_ENDPOINTS . 'class-sm-api-block-endpoint-table.php';
+
+		// Request.
+		require_once SM_API_BLOCK_PATH_INCLUDES . 'class-sm-api-block-request.php';
 	}
 
 	/**
