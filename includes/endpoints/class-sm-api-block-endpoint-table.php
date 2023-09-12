@@ -104,13 +104,58 @@ class Sm_Api_Block_Endpoint_Table extends Sm_Api_Block_Model_Endpoint {
 	 */
 	public function callback() {
 
-		// Set the response status.
-		$this->set_response_status( 200 );
+		// Get the request URL.
+		$request_url = apply_filters(
+			SM_API_BLOCK_FILTER_ROUTE_TABLE_URL,
+			SM_API_BLOCK_TABLE_ENDPOINT_URL
+		);
+
+		// Default request args.
+		$default_args = array(
+			'method' => 'GET',
+		);
+
+		// Get the request args.
+		$request_args = apply_filters( SM_API_BLOCK_FILTER_ROUTE_TABLE_ARGS, $default_args );
+
+		// Get the transient name.
+		$transient_name = apply_filters(
+			SM_API_BLOCK_FILTER_ROUTE_TABLE_TRANSIENT_NAME,
+			SM_API_BLOCK_TRANSIENT_ROUTE_TABLE_NAME
+		);
+
+		// Get the transient expiration.
+		$transient_expiration = apply_filters(
+			SM_API_BLOCK_FILTER_ROUTE_TABLE_TRANSIENT_EXPIRATION,
+			SM_API_BLOCK_TRANSIENT_ROUTE_TABLE_EXPIRATION
+		);
+
+		// Create the request.
+		$request_manager = new Sm_Api_Block_Request(
+			$request_url,
+			$request_args,
+			$transient_name,
+			$transient_expiration
+		);
+
+		// Do and get the response.
+		$response = $request_manager->get_request_response_body( true, $transient_name );
+
+		// If there is an error, return the error.
+		if ( is_wp_error( $response ) || ! $response ) {
+
+			// Set the response status.
+			$this->set_response_status( 400 );
+		} else {
+
+			// Set the response status.
+			$this->set_response_status( 200 );
+		}
 
 		// Get the table data.
 		$table_data = $this->set_response_body(
 			array(
-				'hello' => 'worlds',
+				'data' => $response,
 			)
 		);
 
