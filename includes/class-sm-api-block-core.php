@@ -28,7 +28,7 @@ class Sm_Api_Block_Core {
 	 *
 	 * @var string
 	 */
-	public $text_domain;
+	public $slug;
 
 	/**
 	 * Plugin version.
@@ -45,17 +45,17 @@ class Sm_Api_Block_Core {
 	 * @since 1.0.0
 	 *
 	 * @param string $name         Plugin name.
-	 * @param string $text_domain  Plugin text domain.
+	 * @param string $slug  Plugin text domain.
 	 * @param string $version      Plugin version.
 	 *
 	 * @return void
 	 */
-	public function __construct( $name, $text_domain, $version ) {
+	public function __construct( $name, $slug, $version ) {
 
 		// Set plugin info.
-		$this->name        = $name;
-		$this->text_domain = $text_domain;
-		$this->version     = $version;
+		$this->name    = $name;
+		$this->slug    = $slug;
+		$this->version = $version;
 	}
 
 	/**
@@ -72,6 +72,11 @@ class Sm_Api_Block_Core {
 
 		// Load public hooks.
 		$this->load_hooks_public();
+
+		// Load admin hooks.
+		if ( is_admin() ) {
+			$this->load_hooks_admin();
+		}
 	}
 
 	/**
@@ -94,6 +99,43 @@ class Sm_Api_Block_Core {
 
 		// Request.
 		require_once SM_API_BLOCK_PATH_INCLUDES . 'class-sm-api-block-request.php';
+
+		// Admin.
+		if ( is_admin() ) {
+			require_once SM_API_BLOCK_PATH_INCLUDES . 'class-sm-api-block-admin.php';
+		}
+	}
+
+	/**
+	 * Admin hooks.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function load_hooks_admin() {
+
+		// Initialize the admin class.
+		$handler_admin = new Sm_Api_Block_Admin(
+			$this->name,
+			$this->slug,
+			$this->version
+		);
+
+		// Register scripts.
+		add_action( 'admin_enqueue_scripts', array( $handler_admin, 'register_admin_scripts' ) );
+
+		// Enenqueue scripts.
+		add_action( 'admin_enqueue_scripts', array( $handler_admin, 'enqueue_admin_scripts' ) );
+
+		// Register admin menu.
+		add_action( 'admin_menu', array( $handler_admin, 'register_admin_menu' ) );
+
+		// Register admin header.
+		add_action( 'in_admin_header', array( $handler_admin, 'display_admin_header' ) );
+
+		// Setting form response.
+		add_action( 'admin_post_' . SM_API_BLOCK_SETTING_ACTION_NAME, array( $handler_admin, 'handle_admin_setting_form_submission' ) );
 	}
 
 	/**
@@ -108,7 +150,7 @@ class Sm_Api_Block_Core {
 		// Initialize the endpoint class.
 		$handler_endpoint = new Sm_Api_Block_Endpoint(
 			$this->name,
-			$this->text_domain,
+			$this->slug,
 			$this->version
 		);
 

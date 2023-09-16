@@ -28,7 +28,7 @@ function sm_api_block_run() {
 	// Initialize the core class.
 	$sm_api_block_core = new Sm_Api_Block_Core(
 		SM_API_BLOCK_PLUGIN_NAME,
-		SM_API_BLOCK_TEXT_DOMAIN,
+		SM_API_BLOCK_SLUG,
 		SM_API_BLOCK_VERSION
 	);
 
