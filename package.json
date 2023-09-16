@@ -1,0 +1,13 @@
+{
+  "name": "sm-api-block",
+  "version": "1.0.0",
+  "description": "Helper scripts to process the plugin resources.",
+  "scripts": {
+    "watch-css": "sass --watch assets/scss/admin.scss assets/css/admin.css"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.67.0"
+  }
+}

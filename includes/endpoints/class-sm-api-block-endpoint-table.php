@@ -28,7 +28,7 @@ class Sm_Api_Block_Endpoint_Table extends Sm_Api_Block_Model_Endpoint {
 	 *
 	 * @var string
 	 */
-	public $text_domain;
+	public $slug;
 
 	/**
 	 * Plugin version.
@@ -45,17 +45,17 @@ class Sm_Api_Block_Endpoint_Table extends Sm_Api_Block_Model_Endpoint {
 	 * @since 1.0.0
 	 *
 	 * @param string $name         Plugin name.
-	 * @param string $text_domain  Plugin text domain.
+	 * @param string $slug  Plugin text domain.
 	 * @param string $version      Plugin version.
 	 *
 	 * @return void
 	 */
-	public function __construct( $name, $text_domain, $version ) {
+	public function __construct( $name, $slug, $version ) {
 
 		// Set plugin info.
-		$this->name        = $name;
-		$this->text_domain = $text_domain;
-		$this->version     = $version;
+		$this->name    = $name;
+		$this->slug    = $slug;
+		$this->version = $version;
 	}
 
 	/**
@@ -71,7 +71,7 @@ class Sm_Api_Block_Endpoint_Table extends Sm_Api_Block_Model_Endpoint {
 	public function register_routes() {
 
 		// Get the route namespace.
-		$route_namespace = apply_filters( SM_API_BLOCK_FILTER_ROUTE_TABLE_NAMESPACE, $this->text_domain );
+		$route_namespace = apply_filters( SM_API_BLOCK_FILTER_ROUTE_TABLE_NAMESPACE, $this->slug );
 
 		// Get the route version.
 		$route_version = apply_filters( SM_API_BLOCK_FILTER_ROUTE_TABLE_VERSION, 'v1' );

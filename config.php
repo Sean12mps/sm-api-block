@@ -8,6 +8,9 @@
 // Includes path.
 define( 'SM_API_BLOCK_PATH_INCLUDES', plugin_dir_path( __FILE__ ) . 'includes/' );
 
+// Assets path.
+define( 'SM_API_BLOCK_PATH_ASSETS', plugin_dir_url( __FILE__ ) . 'assets/' );
+
 // Configs path.
 define( 'SM_API_BLOCK_PATH_CONFIGS', plugin_dir_path( __FILE__ ) . 'configs/' );
 
