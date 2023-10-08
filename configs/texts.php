@@ -40,3 +40,6 @@ define( 'SM_API_BLOCK_SETTING_NOTICE_CLEAR_CACHE_FAILED', __( 'API cache could n
 
 // Notice error not sufficient permissions.
 define( 'SM_API_BLOCK_NOTICE_ERROR_NOT_SUFFICIENT_PERMISSIONS', __( 'You do not have sufficient permissions to access this page.', 'sm-api-block' ) );
+
+// API Error invalid parameter.
+define( 'SM_API_BLOCK_API_ERROR_INVALID_PARAMETER', __( 'Invalid parameter.', 'sm-api-block' ) );

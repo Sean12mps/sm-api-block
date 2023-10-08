@@ -20,6 +20,9 @@ define( 'SM_API_BLOCK_PATH_ENDPOINTS', SM_API_BLOCK_PATH_INCLUDES . 'endpoints/'
 // Models path.
 define( 'SM_API_BLOCK_PATH_MODELS', SM_API_BLOCK_PATH_INCLUDES . 'models/' );
 
+// Block path.
+define( 'SM_API_BLOCK_PATH_BLOCKS', plugin_dir_path( __FILE__ ) . 'build/' );
+
 // Load config files.
 require_once SM_API_BLOCK_PATH_CONFIGS . 'texts.php';
 require_once SM_API_BLOCK_PATH_CONFIGS . 'filters.php';

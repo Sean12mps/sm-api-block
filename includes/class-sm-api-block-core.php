@@ -100,6 +100,9 @@ class Sm_Api_Block_Core {
 		// Request.
 		require_once SM_API_BLOCK_PATH_INCLUDES . 'class-sm-api-block-request.php';
 
+		// Gutenberg.
+		require_once SM_API_BLOCK_PATH_INCLUDES . 'class-sm-api-block-gutenberg.php';
+
 		// Admin.
 		if ( is_admin() ) {
 			require_once SM_API_BLOCK_PATH_INCLUDES . 'class-sm-api-block-admin.php';
@@ -154,7 +157,17 @@ class Sm_Api_Block_Core {
 			$this->version
 		);
 
+		// Initialize the Gutenberg class.
+		$handler_gutenberg = new Sm_Api_Block_Gutenberg(
+			$this->name,
+			$this->slug,
+			$this->version
+		);
+
 		// Hook into WP routes.
 		add_action( 'rest_api_init', array( $handler_endpoint, 'register_routes' ) );
+
+		// Register block.
+		add_action( 'init', array( $handler_gutenberg, 'register_blocks' ) );
 	}
 }

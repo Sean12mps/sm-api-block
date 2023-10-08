@@ -91,7 +91,82 @@ class Sm_Api_Block_Endpoint_Table extends Sm_Api_Block_Model_Endpoint {
 					// Public endpoint.
 					return true;
 				},
+				'args'                => array(
+					'columns' => array(
+						'validate_callback' => function ( $param ) {
+							return is_array( $param );
+						},
+						'sanitize_callback' => function ( $param ) {
+							return array_map( 'sanitize_text_field', $param );
+						},
+					),
+				),
 			)
+		);
+	}
+
+	/**
+	 * Filter data by column names.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $table_data  The data to be filtered.
+	 * @param array $columns     The columns to be filtered.
+	 *
+	 * @return array | false
+	 */
+	public function filter_data_by_columns( $table_data, $columns ) {
+
+		// Get index of each $columns value in $table_data['headers'].
+		$indexes = array_map(
+			function ( $value ) use ( $table_data ) {
+				return array_search( $value, $table_data['headers'], true );
+			},
+			$columns
+		);
+
+		// Check if there is a false value in $indexes.
+		if ( in_array( false, $indexes, true ) ) {
+			return false;
+		}
+
+		// Loop table data headers and filter by $indexes.
+		$_table_headers = array_filter(
+			$table_data['headers'],
+			function ( $value, $key ) use ( $indexes ) {
+				return in_array( $key, $indexes, true );
+			},
+			ARRAY_FILTER_USE_BOTH
+		);
+
+		// Reset array keys.
+		$table_headers = array_values( $_table_headers );
+
+		// Filter data rows by order of $indexes.
+		$table_rows = array_map(
+			function ( $row_values ) use ( $indexes ) {
+
+				$new_row_values = array();
+
+				$i = 0;
+
+				foreach ( $row_values as $key => $value ) {
+					if ( in_array( $i, $indexes, true ) ) {
+						$new_row_values[ $key ] = $value;
+					}
+
+					$i++;
+				}
+
+				return $new_row_values;
+			},
+			$table_data['rows']
+		);
+
+		// Modify the response.
+		return array(
+			'headers' => $table_headers,
+			'rows'    => $table_rows,
 		);
 	}
 
@@ -100,9 +175,11 @@ class Sm_Api_Block_Endpoint_Table extends Sm_Api_Block_Model_Endpoint {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param WP_REST_Request $request The request object.
+	 *
 	 * @return array
 	 */
-	public function callback() {
+	public function callback( $request ) {
 
 		// Get the request URL.
 		$request_url = apply_filters(
@@ -150,6 +227,36 @@ class Sm_Api_Block_Endpoint_Table extends Sm_Api_Block_Model_Endpoint {
 
 			// Set the response status.
 			$this->set_response_status( 200 );
+
+			// Get the columns.
+			$columns = $request->get_param( 'columns' );
+
+			// If columns exists, return data filtered by columns.
+			if ( $columns ) {
+				$table_data = $response['data'];
+
+				$filtered_data = $this->filter_data_by_columns( $table_data, $columns );
+
+				// Check if there is a false value in $indexes.
+				if ( ! $filtered_data ) {
+
+					// Set the response status.
+					$this->set_response_status( 400 );
+
+					// Set the response body.
+					$this->set_response_body(
+						array(
+							'error' => SM_API_BLOCK_API_ERROR_INVALID_PARAMETER,
+						)
+					);
+
+					// Return the response.
+					return $this->respond();
+				}
+
+				// Modify the response.
+				$response['filtered_data'] = $filtered_data;
+			}
 		}
 
 		// Get the table data.
