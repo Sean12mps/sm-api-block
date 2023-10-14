@@ -36,3 +36,23 @@ function sm_api_block_run() {
 	$sm_api_block_core->init();
 }
 add_action( 'plugins_loaded', 'sm_api_block_run' );
+
+/**
+ * Deactivation hook.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function sm_api_block_deactivation() {
+
+	// Get the transient name.
+	$transient_name = apply_filters(
+		SM_API_BLOCK_FILTER_ROUTE_TABLE_TRANSIENT_NAME,
+		SM_API_BLOCK_TRANSIENT_ROUTE_TABLE_NAME
+	);
+
+	// Clear transient.
+	delete_transient( $transient_name );
+}
+register_deactivation_hook( __FILE__, 'sm_api_block_deactivation' );
