@@ -43,3 +43,6 @@ define( 'SM_API_BLOCK_NOTICE_ERROR_NOT_SUFFICIENT_PERMISSIONS', __( 'You do not 
 
 // API Error invalid parameter.
 define( 'SM_API_BLOCK_API_ERROR_INVALID_PARAMETER', __( 'Invalid parameter.', 'sm-api-block' ) );
+
+// CLI command name.
+define( 'SM_API_BLOCK_CLI_COMMAND_NAME', 'sm-api-block' );
