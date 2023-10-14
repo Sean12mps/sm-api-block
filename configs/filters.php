@@ -25,3 +25,6 @@ define( 'SM_API_BLOCK_FILTER_ROUTE_TABLE_TRANSIENT_NAME', 'sm_api_block_filter_r
 
 // Route response transient expiration.
 define( 'SM_API_BLOCK_FILTER_ROUTE_TABLE_TRANSIENT_EXPIRATION', 'sm_api_block_filter_route_table_transient_expiration' );
+
+// CLI command name.
+define( 'SM_API_BLOCK_FILTER_CLI_COMMAND_NAME', 'sm_api_block_filter_cli_command_name' );

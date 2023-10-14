@@ -107,6 +107,11 @@ class Sm_Api_Block_Core {
 		if ( is_admin() ) {
 			require_once SM_API_BLOCK_PATH_INCLUDES . 'class-sm-api-block-admin.php';
 		}
+
+		// CLI.
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			require_once SM_API_BLOCK_PATH_INCLUDES . 'class-sm-api-block-cli.php';
+		}
 	}
 
 	/**
@@ -169,5 +174,31 @@ class Sm_Api_Block_Core {
 
 		// Register block.
 		add_action( 'init', array( $handler_gutenberg, 'register_blocks' ) );
+
+		// Register CLI.
+		add_action( 'cli_init', array( $this, 'register_cli' ) );
+	}
+
+	/**
+	 * Register plugin CLI.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function register_cli() {
+
+		// Check if WP CLI is available.
+		if ( ! class_exists( 'WP_CLI' ) ) {
+			return;
+		}
+
+		// Command name.
+		$command_name = apply_filters(
+			SM_API_BLOCK_FILTER_CLI_COMMAND_NAME,
+			SM_API_BLOCK_CLI_COMMAND_NAME
+		);
+
+		WP_CLI::add_command( $command_name, 'Sm_Api_Block_Cli' );
 	}
 }
