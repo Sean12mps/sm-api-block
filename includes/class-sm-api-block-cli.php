@@ -23,7 +23,7 @@ class Sm_Api_Block_Cli {
 	 *
 	 * @since 1.0.0
 	 */
-	function clear_transient() {
+	public function clear_transient() {
 
 		// Get transient name.
 		$transient_name = apply_filters(

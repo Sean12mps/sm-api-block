@@ -24,6 +24,6 @@
 				<li><?php echo esc_attr( $sm_api_block_needed_capability ); ?></li>
 			<?php endforeach; ?>
 		</ul>
-		<p class="desc"><?php esc_html_e( 'To gain access, please refer to your site\'s administrator to be assigned the appropriate role as mentioned above.' ) ?></p>
+		<p class="desc"><?php esc_html_e( 'To gain access, please refer to your site\'s administrator to be assigned the appropriate role as mentioned above.', 'sm-api-block' ); ?></p>
 	</div>
 </div>
