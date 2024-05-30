@@ -6,7 +6,8 @@
     "wpsc-build": "wp-scripts build",
     "wpsc-start": "wp-scripts start",
     "wpsc-addblock": "cd src && npx @wordpress/create-block@latest --no-plugin",
-    "sass-watch": "sass --watch assets/scss/admin.scss assets/css/admin.css"
+    "sass-watch": "sass --watch assets/scss/admin.scss assets/css/admin.css",
+    "phpcs": "./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=.phpcs.xml.dist ."
   },
   "author": "",
   "license": "ISC",
