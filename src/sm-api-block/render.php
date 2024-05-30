@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Block render file.
  *
